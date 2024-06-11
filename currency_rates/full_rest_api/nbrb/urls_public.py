@@ -1,4 +1,4 @@
-from full_rest_api.nbrb.views import CurrencyViewSet
+from full_rest_api.nbrb.views import CorrectParamsViewSet, CurrencyViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter(trailing_slash=True)
@@ -9,6 +9,12 @@ router.register(
     '',
     CurrencyViewSet,
     basename='CurrencyViewSet',
+)
+
+router.register(
+    '',
+    CorrectParamsViewSet,
+    basename='CurrentDateViewSet',
 )
 
 

@@ -3,12 +3,13 @@ import datetime
 import requests
 from drf_spectacular.utils import extend_schema
 from full_rest_api.nbrb import serializers
-from full_rest_api.nbrb.filter_parameters import current_currency
+from full_rest_api.nbrb.filter_parameters import current_currency, current_date
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from currency_rates.settings import NBRB_DYNAMICS_API_URL, NBRB_RATES_API_URL
+from currency_rates.settings import (BASE_NBRB_RATES_API_URL,
+                                     NBRB_DYNAMICS_API_URL, NBRB_RATES_API_URL)
 
 
 class CurrencyViewSet(
@@ -41,7 +42,7 @@ class CurrencyViewSet(
             elif result < 0:
                 return f"The rate fell by {round(result, 3)}"
             else:
-                return "Уxchange rate unchanged"
+                return "Exchange rate unchanged"
         return "No information"
 
     def __normalize_data(self, data):
@@ -83,6 +84,7 @@ class CurrencyViewSet(
             url=NBRB_RATES_API_URL.format(request.query_params.get('currency_code', '')),
             params={
                 "parammode": 2,
+                "periodicity": 0,
                 "ondate": request.query_params.get('date', ''),
             },
         )
@@ -95,5 +97,55 @@ class CurrencyViewSet(
 
         return Response(
             serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+
+class CorrectParamsViewSet(
+    viewsets.GenericViewSet,
+):
+
+    queryset = ''
+
+    def __check_api_request(self, response):
+        if not self.request.query_params.get('date'):
+            return Response(
+                {'error': 'Has no date. Please write correct date.'},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        elif not response:
+            return Response(
+                {'error': 'Incorrect date. Please write real date.'},
+                status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+            )
+        elif response.status_code == 400:
+            return Response(
+                {'error': 'Incorrect date format. It should be like YEAR-MONTH-DAY. Please write correct date.'},
+                status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+            )
+
+    @extend_schema(
+        description='Сhecks if the date for the request is correct.',
+        tags=['NBRB'],
+        parameters=[
+            *current_date,
+        ]
+    )
+    @action(methods=['GET'], detail=False, url_path='check_date')
+    def get_check_date(self, request, *args, **kwargs):
+        nbrb_response = requests.get(
+            url=BASE_NBRB_RATES_API_URL,
+            params={
+                "parammode": 2,
+                "periodicity": 0,
+                "ondate": request.query_params.get('date', ''),
+            },
+        )
+
+        if response := self.__check_api_request(nbrb_response):
+            return response
+
+        return Response(
+            "Date is correct",
             status=status.HTTP_200_OK,
         )
