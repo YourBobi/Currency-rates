@@ -11,11 +11,11 @@ from rest_framework.response import Response
 from currency_rates.settings import NBRB_DYNAMICS_API_URL, NBRB_RATES_API_URL
 
 
-class CatalogCompanyLinkViewSet(
+class CurrencyViewSet(
     viewsets.GenericViewSet,
 ):
 
-    serializer_class = serializers.CatalogCompanyLinkStatisticSerializer
+    serializer_class = serializers.CurrencySerializer
     queryset = ''
 
     @staticmethod
@@ -71,7 +71,7 @@ class CatalogCompanyLinkViewSet(
             )
 
     @extend_schema(
-        description='Get a list.',
+        description='Get information about currency.',
         tags=['NBRB'],
         parameters=[
             *current_currency,
