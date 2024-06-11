@@ -2,7 +2,7 @@
 name = "currency-rates"
 version = "0.1.0"
 description = ""
-authors = ["Selivonchyk <selivonchik_n@rocketdata.io>"]
+authors = ["Selivonchyk <nikolay_selivonchyk1@mail.ru>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -13,6 +13,7 @@ drf-spectacular = "^0.27.2"
 requests = "^2.32.3"
 isort = "^5.13.2"
 flake8 = "^7.0.0"
+pytest = "^8.2.2"
 
 
 [build-system]

@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-j#f-exp=kkft=e&4n9gj&qt!i&)dkh%itm(=jdjpr&v18ziyzo"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -150,5 +150,6 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
 
+BASE_NBRB_RATES_API_URL = 'https://api.nbrb.by/exrates/rates/'
 NBRB_RATES_API_URL = 'https://api.nbrb.by/exrates/rates/{0}'
 NBRB_DYNAMICS_API_URL = 'https://api.nbrb.by/exrates/rates/dynamics/{0}'

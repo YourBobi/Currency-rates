@@ -18,3 +18,13 @@ current_currency = [
         description='Currency code',
     ),
 ]
+
+current_date = [
+    OpenApiParameter(
+        'date',
+        type=OpenApiTypes.STR,
+        required=True,
+        description='Date.',
+        examples=[OpenApiExample('Example 1', value=datetime.now().strftime('%Y-%m-%d'))],
+    ),
+]
