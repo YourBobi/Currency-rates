@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 
-class CatalogCompanyLinkStatisticSerializer(serializers.Serializer):
+class CurrencySerializer(serializers.Serializer):
 
     cur_id = serializers.IntegerField
     current_name = serializers.CharField()
