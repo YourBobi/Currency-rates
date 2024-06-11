@@ -24,7 +24,7 @@ SECRET_KEY = "django-insecure-j#f-exp=kkft=e&4n9gj&qt!i&)dkh%itm(=jdjpr&v18ziyzo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -135,6 +135,8 @@ REST_FRAMEWORK = {
         'token': '60/min',
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
 }
 
 SPECTACULAR_SETTINGS = {
@@ -144,7 +146,9 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_SETTINGS': {
         'JSON_EDITOR': True,
         'deepLinking': True,
-        "persistAuthorization": True,
     },
     'COMPONENT_SPLIT_REQUEST': True,
 }
+
+NBRB_RATES_API_URL = 'https://api.nbrb.by/exrates/rates/{0}'
+NBRB_DYNAMICS_API_URL = 'https://api.nbrb.by/exrates/rates/dynamics/{0}'

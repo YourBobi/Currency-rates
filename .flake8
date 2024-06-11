@@ -1,0 +1,12 @@
+[flake8]
+max-line-length = 120
+max-complexity = 15
+max-annotations-complexity = 4
+
+exclude =
+  .git,
+  *migrations*
+  *tests*
+  *commands*
+  *catalog*
+  manage.py
