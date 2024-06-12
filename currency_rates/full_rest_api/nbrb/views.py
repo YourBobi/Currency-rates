@@ -1,4 +1,5 @@
 import datetime
+import zlib
 
 import requests
 from drf_spectacular.utils import extend_schema
@@ -98,6 +99,7 @@ class CurrencyViewSet(
         return Response(
             serializer.data,
             status=status.HTTP_200_OK,
+            headers={"CRC32": hex(zlib.crc32(bytes(str(serializer.data), 'utf-8')))}
         )
 
 
@@ -109,19 +111,25 @@ class CorrectParamsViewSet(
 
     def __check_api_request(self, response):
         if not self.request.query_params.get('date'):
+            text = 'Has no date. Please write correct date.'
             return Response(
-                {'error': 'Has no date. Please write correct date.'},
+                {'error': text},
                 status=status.HTTP_204_NO_CONTENT,
+                headers={"CRC32": hex(zlib.crc32(bytes(text, 'utf-8')))}
             )
         elif not response:
+            text = 'Incorrect date. Please write real date.'
             return Response(
-                {'error': 'Incorrect date. Please write real date.'},
+                {'error': text},
                 status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+                headers={"CRC32": hex(zlib.crc32(bytes(text, 'utf-8')))}
             )
         elif response.status_code == 400:
+            text = 'Incorrect date format. It should be like YEAR-MONTH-DAY. Please write correct date.'
             return Response(
-                {'error': 'Incorrect date format. It should be like YEAR-MONTH-DAY. Please write correct date.'},
+                {'error': text},
                 status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION,
+                headers={"CRC32": hex(zlib.crc32(bytes(text, 'utf-8')))}
             )
 
     @extend_schema(
@@ -148,4 +156,5 @@ class CorrectParamsViewSet(
         return Response(
             "Date is correct",
             status=status.HTTP_200_OK,
+            headers={"CRC32": hex(zlib.crc32(b'Date is correct'))}
         )

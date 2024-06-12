@@ -39,3 +39,6 @@ $ poetry install
 ![img_3.png](images/img_3.png)
 ![img_4.png](images/img_4.png)
 ![img_5.png](images/img_5.png)
+
+Так же добавил crc32 в заголовок ответа. 
+![img_6.png](images/img_6.png)
